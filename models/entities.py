@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, String, String, DateTime, String, Float, Float, Float, Float, Boolean
+from sqlalchemy import Column, String, DateTime, Float, Boolean
 from core.database import Base
 
 class SQLCOMPC01(Base):
