@@ -14,14 +14,14 @@ class SyncService:
     def map_to_monday_format(compra: Compra) -> MondayItem:
         """Mapea los datos de SQL a formato de Monday.com"""
         column_values = {
-            "text_mknkavhb": compra.NOMBRE,
-            "text_mkq1a28e": compra.SU_REFER,
-            "date_mkpb1ne5": compra.FECHA_DOC.isoformat(),
-            "text_mkq1n6xx": compra.MONEDA,
-            "numeric_mkpb12gq": compra.TIPCAMB,
-            "numeric_mkq1mcwv": compra.TOT_IND,
-            "numeric_mkq1wcdb": compra.IMPORTE,
-            "numeric_mkq1fpnz": compra.IMPORTEME,
+            "text_mknkr94f": compra.NOMBRE,
+            "text_mknk2qt": compra.SU_REFER,
+            "date4": compra.FECHA_DOC.isoformat(),
+            "text_mkq36w8v": compra.MONEDA,
+            "numeric_mknkwc1": compra.TIPCAMB,
+            "numeric_mknkwz9j": compra.TOT_IND,
+            "numeric_mknkb26y": compra.IMPORTE,
+            "numeric_mknk6qv1": compra.IMPORTEME,
             # Agrega aquí otros mapeos de columnas según tu tablero
         }
         return MondayItem(
