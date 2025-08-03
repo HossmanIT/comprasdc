@@ -11,7 +11,7 @@ class MondayClient:
     def __init__(self):
         verify_credentials()
         self.headers = {
-            "Authorization": settings.MONDAY_API_KEY.get_secret_value(),
+            "Authorization": settings.MONDAY_API_KEY.get_secret_value(),  # Convertir SecretStr a str
             "Content-Type": "application/json"
         }
         self.api_url = settings.MONDAY_API_URL
@@ -19,21 +19,21 @@ class MondayClient:
     def create_item(self, board_id: str, item_name: str, column_values: Dict[str, Any], group_id: str = None):
         """Crea un nuevo ítem en el tablero especificado"""
         group_part = f', group_id: "{group_id}"' if group_id else ''
-        
-        # Escapar comillas en el nombre del ítem para evitar errores en GraphQL
         escaped_item_name = item_name.replace('"', '\\"')
-        
-        query = f"""
+        column_values_str = json.dumps(column_values)
+        column_values_str_escaped = column_values_str.replace('"', '\\"')
+        query = f'''
         mutation {{
             create_item (
                 board_id: {board_id},
                 item_name: "{escaped_item_name}",
-                column_values: {json.dumps(column_values)}{group_part}
+                column_values: "{column_values_str_escaped}"{group_part}
             ) {{
                 id
             }}
         }}
-        """
+        '''
+        logger.info(f"Query enviado a Monday:\n{query}")
 
         try:
             response = requests.post(
@@ -43,14 +43,11 @@ class MondayClient:
             )
             response.raise_for_status()
             result = response.json()
-            
-            # Verificar si hay errores en la respuesta de GraphQL
+            logger.info(f"Respuesta de Monday:\n{result}")
             if 'errors' in result:
                 logger.error(f"Error en GraphQL: {result['errors']}")
                 raise Exception(f"GraphQL errors: {result['errors']}")
-                
             return result
-            
         except requests.exceptions.RequestException as e:
             logger.error(f"Error al crear ítem en Monday: {str(e)}")
             if e.response is not None:
