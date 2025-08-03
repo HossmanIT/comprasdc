@@ -11,7 +11,7 @@ class SQLService:
         self.db = db
 
     def get_recent_purchases(self, days_back: int = 60) -> List[SQLCOMPC01]:
-        """Obtiene las facturas de los últimos N días que no han sido sincronizadas"""
+        """Obtiene las compras de los últimos N días que no han sido sincronizadas"""
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days_back)
 
@@ -22,8 +22,8 @@ class SQLService:
                 SQLCOMPC01.SINCRONIZADO == False
             ).all()
 
-            logger.info(f"Encontradas {len(purchases)} facturas no sincronizadas de los últimos {days_back} días")
+            logger.info(f"Encontradas {len(purchases)} compras no sincronizadas de los últimos {days_back} días")
             return purchases
         except Exception as e:
-            logger.error(f"Error al obtener facturas: {str(e)}")
+            logger.error(f"Error al obtener compras: {str(e)}")
             raise

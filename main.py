@@ -14,14 +14,14 @@ app = FastAPI(
     version=settings.API_VERSION
 )
 
-@app.post("/sync-today-purchases")
-async def sync_today_purchases(db: Session = Depends(get_db)):
-    """Endpoint para sincronizar compras del día con Monday.com y actualizar SQL"""
+@app.post("/sync-recent-purchases")
+async def sync_recent_purchases(db: Session = Depends(get_db)):
+    """Endpoint para sincronizar compras recientes con Monday.com y actualizar SQL"""
     try:
-        # Obtener compras del día
+        # Obtener compras recientes
         sql_service = SQLService(db)
-        purchases = sql_service.get_today_purchases()
-        
+        purchases = sql_service.get_recent_purchases()
+
         # Sincronizar con Monday.com y actualizar SQL
         sync_service = SyncService()
         result = sync_service.sync_purchases(purchases, db)  # Pasamos la sesión de DB
